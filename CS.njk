@@ -3,28 +3,19 @@ private async Task<bool> {{name}} () {
 			string url = "{{request.url|e}}";
 
 			HttpWebRequest request = (HttpWebRequest)WebRequest.Create (new Uri(url));
-
-			{% for header, value in headers %}{% if header == "Range" %}request.addRange("{{value|e}}");
-			{% else %}request.{{header}} = "{{value|e}}";
-			{% endif %}{% endfor %}
-			{% for header, value in custom_headers %}request.Headers.Add("{{header|e}}", "{{value|e}}");
+			{% for header, value in headers %}{% if header == "Range" %}request.addRange("{{value|e}}");{% else %}request.{{header}} = "{{value|e}}";{% endif %}
+			{% endfor %}{% for header, value in custom_headers %}request.Headers.Add("{{header|e}}", "{{value|e}}");
 			{% endfor %}
 			request.Method = "{{request.method|e}}";
-			{% if text_body or file == true %}
-			{% if text_body %}
+			{% if text_body or file == true %}{% if text_body %}
 			string postData = "{{text_body|e}}";
 			ASCIIEncoding encoding = new ASCIIEncoding ();
-			byte[] byte1 = encoding.GetBytes (postData);
-			{% else %}
-			byte[] byte1 = File.ReadAllBytes(fileName);
-			{% endif %}
+			byte[] byte1 = encoding.GetBytes (postData);{% else %}byte[] byte1 = File.ReadAllBytes(fileName);{% endif %}
 			{% if compute_length == true %}request.ContentLength = byte1.Length;{% endif %}
-
 			Stream newStream = request.GetRequestStream ();
 			newStream.Write (byte1, 0, byte1.Length);
 			newStream.Close ();
 			{% endif %}
-
 			using (WebResponse response = await request.GetResponseAsync ()) {
 				using (Stream stream = response.GetResponseStream ()) {
 					return true;

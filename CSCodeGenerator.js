@@ -5,7 +5,7 @@ nunjucks.configure({ autoescape: false });
 var env = new nunjucks.Environment(null,{ autoescape: false });
 
 env.addFilter('e', function(str) {
-   return str.replace(/[\\"]/g, '\\$&');
+   return str.replace(/[\\"]/g, '\\$&').replace(/\n/g, "\\n");
 });
 
 
@@ -24,7 +24,7 @@ var header_mappings = {
 	"user-agent": "UserAgent",
 }
 
-var CSCodeGenerator = function() {
+var CSharpCodeGenerator = function() {
 
 	this.generate = function(context, requests, options) {
 		
@@ -80,13 +80,12 @@ var CSCodeGenerator = function() {
 
 }
 
-CSCodeGenerator.identifier = "com.luckymarmot.CSCodeGenerator";
+CSharpCodeGenerator.identifier = "com.luckymarmot.PawExtensions.CSharpCodeGenerator";
 
-CSCodeGenerator.title = "C#";
+CSharpCodeGenerator.title = "C#";
 
-CSCodeGenerator.languageHighlighter = "cs";
+CSharpCodeGenerator.languageHighlighter = "cs";
 
-CSCodeGenerator.fileExtension = "cs";
+CSharpCodeGenerator.fileExtension = "cs";
 
-
-registerCodeGenerator(CSCodeGenerator);
+registerCodeGenerator(CSharpCodeGenerator);
