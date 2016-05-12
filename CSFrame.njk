@@ -1,0 +1,13 @@
+using System;
+using System.Threading.Tasks;
+using System.Net;
+using System.IO;
+using System.Text;
+
+namespace MyNamespace {
+	public class MyActivity {
+		{% for request in requests %}
+		{{request}}
+		{% endfor %}
+	}
+}
